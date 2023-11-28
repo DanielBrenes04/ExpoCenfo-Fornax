@@ -32,20 +32,21 @@ def connected(client):
     print("Connected to Adafruit IO!  Listening for DemoFeed changes...")
     client.subscribe("DemoFeed")
 
-
 def subscribe(client, userdata, topic, granted_qos):
     print("Subscribed to {0} with QOS level {1}".format(topic, granted_qos))
-
 
 def unsubscribe(client, userdata, topic, pid):
     print("Unsubscribed from {0} with PID {1}".format(topic, pid))
 
-
 def disconnected(client):
     print("Disconnected from Adafruit IO!")
     
+def publish(lient, userdata, topic, pid):
+    print("Published to {0} with PID {1}".format(topic, pid))
+    
 def message(client, feed_id, payload):
     print("Feed {0} received new value: {1}".format(feed_id, payload))
+    
 
 last_print = time.monotonic()
 while True:
@@ -105,9 +106,10 @@ while True:
         
         print("Connecting to Adafruit IO...")
         io.connect()
-        
-        value = [LatitudeV,LongitudeV,IdSensor]
-        io.publish("DemoFeed", value)
+        separator = "|"
+        data = separator.join(map(str, [LatitudeV, LongitudeV, IdSensor]))
+
+        io.publish("DemoFeed", data)
 
 
         

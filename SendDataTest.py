@@ -22,11 +22,9 @@ print("Connected to %s!" % secrets["ssid"])
 
 def connected(client):
     print("Connected to Adafruit IO!  Listening for DemoFeed changes...")
-    client.subscribe("DemoFeed")
 
 
-def subscribe(client, userdata, topic, granted_qos):
-    print("Subscribed to {0} with QOS level {1}".format(topic, granted_qos))
+
 
 
 def unsubscribe(client, userdata, topic, pid):
@@ -36,6 +34,8 @@ def unsubscribe(client, userdata, topic, pid):
 def disconnected(client):
     print("Disconnected from Adafruit IO!")
 
+def publish(client, userdata, topic, pid):
+    print("Published to {0} with PID {1}".format(topic, pid))
 
 
 def message(client, feed_id, payload):
@@ -59,7 +59,6 @@ io = IO_MQTT(mqtt_client)
 
 io.on_connect = connected
 io.on_disconnect = disconnected
-io.on_subscribe = subscribe
 io.on_unsubscribe = unsubscribe
 io.on_message = message
 
@@ -72,6 +71,10 @@ while True:
     io.loop()
     if (time.monotonic() - last) >= 10:
         value = randint(0, 100)
+        texto1 = "Esto es una prueba"
+        texto2 = "Esto es una prueba2"
+        msj = [texto1, texto2,value]
         print("Publishing {0} to DemoFeed.".format(value))
-        io.publish("DemoFeed", value)
+        print(msj)
+        io.publish("DemoFeed", "Prueba")
         last = time.monotonic()
